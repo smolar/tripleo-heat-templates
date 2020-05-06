@@ -378,6 +378,10 @@ parameters:
     type: boolean
     description: Set to true to enable configuration for STF client.
     default: false
+  EnableMcelog:
+    type: boolean
+    description: Set to true to enable mcelog
+    default: false
 
 conditions:
   amqp_connection:
@@ -404,6 +408,8 @@ conditions:
   sensubility_needs_sudo:
     not:
       equals: [{get_param: CollectdSensubilityExecSudoRule}, '']
+  enable_mcelog:
+    equals: [{get_param: EnableMcelog}, true]
 
 resources:
   ContainersCommon:
@@ -733,6 +739,10 @@ outputs:
             mode: "{{ item.mode }}"
           with_items:
             - { 'path': /var/log/containers/collectd, 'setype': container_file_t, 'mode': '0750' }
+        - name: import provision_mcelog ansible template
+          import_role:
+            name: tripleo_provision_mcelog
+          when: enable_mcelog == 'true'
       fast_forward_upgrade_tasks:
         - when:
             - step|int == 0
