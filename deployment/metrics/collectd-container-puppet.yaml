@@ -378,10 +378,10 @@ parameters:
     type: boolean
     description: Set to true to enable configuration for STF client.
     default: false
-  EnableMcelog:
+  CollectdEnableMcelog:
     type: boolean
     description: Set to true to enable mcelog
-    default: false
+    default: true
 
 conditions:
   amqp_connection:
