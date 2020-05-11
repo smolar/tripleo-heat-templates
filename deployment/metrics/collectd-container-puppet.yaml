@@ -382,6 +382,10 @@ parameters:
     type: boolean
     description: Set to true to enable mcelog
     default: true
+  CollectdEnableSnmpd:
+    type: boolean
+    description: Set to true to enable snmpd
+    default: true
 
 conditions:
   amqp_connection:
@@ -410,6 +414,8 @@ conditions:
       equals: [{get_param: CollectdSensubilityExecSudoRule}, '']
   enable_mcelog:
     equals: [{get_param: CollectdEnableMcelog}, true]
+  enable_snmpd[:
+    equals: [{get_param: CollectdEnableSnmpd}, true]
 
 resources:
   ContainersCommon:
@@ -699,6 +705,9 @@ outputs:
         - name: set enable_mcelog fact
           set_fact:
             enable_mcelog: {get_param: CollectdEnableMcelog}
+        - name: set enable_snmpd fact
+          set_fact:
+            enable_mcelog: {get_param: CollectdEnableSnmpd}
         - name: Configure rsyslog for container healthchecks
           when:
             - step|int == 1
@@ -742,10 +751,14 @@ outputs:
             mode: "{{ item.mode }}"
           with_items:
             - { 'path': /var/log/containers/collectd, 'setype': container_file_t, 'mode': '0750' }
-        - name: import provision_mcelog ansible template
+        - name: import provision_mcelog
           import_role:
             name: tripleo_provision_mcelog
           when: enable_mcelog == 'true'
+        - name: import provision_snmpd
+          import_role:
+            name: tripleo_provision_snmpd
+          when: enable_snmpd == 'true'
       fast_forward_upgrade_tasks:
         - when:
             - step|int == 0
