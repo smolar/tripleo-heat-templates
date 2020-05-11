@@ -754,11 +754,11 @@ outputs:
         - name: import provision_mcelog
           import_role:
             name: tripleo_provision_mcelog
-          when: enable_mcelog == 'true'
+          #when: enable_mcelog == 'true'
         - name: import provision_snmpd
           import_role:
             name: tripleo_provision_snmpd
-          when: enable_snmpd == 'true'
+          #when: enable_snmpd == 'true'
       fast_forward_upgrade_tasks:
         - when:
             - step|int == 0
