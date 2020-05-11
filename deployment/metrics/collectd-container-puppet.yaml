@@ -707,7 +707,7 @@ outputs:
             enable_mcelog: {get_param: CollectdEnableMcelog}
         - name: set enable_snmpd fact
           set_fact:
-            enable_mcelog: {get_param: CollectdEnableSnmpd}
+            enable_snmpd: {get_param: CollectdEnableSnmpd}
         - name: Configure rsyslog for container healthchecks
           when:
             - step|int == 1
