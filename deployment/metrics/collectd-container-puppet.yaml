@@ -409,7 +409,7 @@ conditions:
     not:
       equals: [{get_param: CollectdSensubilityExecSudoRule}, '']
   enable_mcelog:
-    equals: [{get_param: EnableMcelog}, true]
+    equals: [{get_param: CollectdEnableMcelog}, true]
 
 resources:
   ContainersCommon:
@@ -696,6 +696,9 @@ outputs:
         - name: set enable_sensubility fact
           set_fact:
             enable_sensubility: {get_param: CollectdEnableSensubility}
+        - name: set enable_mcelog fact
+          set_fact:
+            enable_mcelog: {get_param: CollectdEnableMcelog}
         - name: Configure rsyslog for container healthchecks
           when:
             - step|int == 1
